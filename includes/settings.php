@@ -698,6 +698,24 @@ function thold_config_settings() {
 			'default' => read_config_option('settings_from_name'),
 			'max_length' => 255,
 		),
+		'thold_threshold_header' => array(
+			'friendly_name' => __('Threshold Notification Options', 'thold'),
+			'method' => 'spacer',
+		),
+		'alert_thold_one_mail' => array(
+			'friendly_name' => __('Single Email Notification', 'thold'),
+			'description' => __('Supported for Notification Lists and the Notification Queue only.  If there are multiple Threshold Alerts (breached or restored) in a single processing cycle, send only one Email to Notification List recipients combining all Threshold alerts.', 'thold'),
+			'method' => 'checkbox',
+			'default' => ''
+		),
+		'alert_thold_subject' => array(
+			'friendly_name' => __('Single Email Notification Subject', 'thold'),
+			'description' => __('This is the Email Subject to be used for all Single Email Notification Emails for Threshold Alerts.', 'thold'),
+			'method' => 'textbox',
+			'default' => 'Thold Threshold Notification: Multiple Alerts Found',
+			'size' => 80,
+			'max_length' => 255,
+		),
 		'thold_device_header' => array(
 			'friendly_name' => __('Device Notification Options', 'thold'),
 			'method' => 'spacer',

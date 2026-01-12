@@ -588,6 +588,48 @@ function thold_config_settings() {
 			'default' => $default_facility,
 			'array' => $syslog_facil_array,
 		),
+		'cemdb_header' => array(
+			'friendly_name' => __('CEMDB (Cisco Error Message Database) Integration', 'thold'),
+			'method' => 'spacer',
+		),
+		'thold_cemdb_enabled' => array(
+			'friendly_name' => __('Enable CEMDB Integration', 'thold'),
+			'description' => __('If checked, Threshold alerts from Cisco devices will be enriched with detailed error information from the Cisco Error Message Database (CEMDB).', 'thold'),
+			'method' => 'checkbox',
+			'default' => ''
+		),
+		'thold_cemdb_endpoint' => array(
+			'friendly_name' => __('CEMDB API Endpoint', 'thold'),
+			'description' => __('The API endpoint URL for CEMDB lookups. Leave blank to use the default Cisco CEMDB API.', 'thold'),
+			'method' => 'textbox',
+			'size' => 80,
+			'max_length' => 255,
+			'default' => 'https://api.cisco.com/bug/v3.0/bugs/bug_ids'
+		),
+		'thold_cemdb_api_key' => array(
+			'friendly_name' => __('CEMDB API Key', 'thold'),
+			'description' => __('Your Cisco API key for accessing CEMDB. Required when CEMDB integration is enabled.', 'thold'),
+			'method' => 'textbox',
+			'size' => 80,
+			'max_length' => 255,
+			'default' => ''
+		),
+		'thold_cemdb_timeout' => array(
+			'friendly_name' => __('CEMDB API Timeout', 'thold'),
+			'description' => __('Timeout in seconds for CEMDB API requests.', 'thold'),
+			'method' => 'textbox',
+			'size' => 4,
+			'max_length' => 4,
+			'default' => '5'
+		),
+		'thold_cemdb_cache_ttl' => array(
+			'friendly_name' => __('CEMDB Cache TTL', 'thold'),
+			'description' => __('Time to live (in seconds) for cached CEMDB responses. Default is 86400 (24 hours).', 'thold'),
+			'method' => 'textbox',
+			'size' => 10,
+			'max_length' => 10,
+			'default' => '86400'
+		),
 		'thold_alerting_header' => array(
 			'friendly_name' => __('Alert Presets', 'thold'),
 			'method' => 'spacer',

@@ -4187,6 +4187,12 @@ function get_thold_alert_text($data_source_name, $thold, $h, $currentval, $local
 
 	$alert_text = thold_replace_threshold_tags($alert_text, $thold, $h, $currentval, $local_graph_id, $data_source_name);
 
+	// Enrich with CEMDB if enabled
+	if (file_exists(dirname(__FILE__) . '/thold_cemdb.php')) {
+		include_once(dirname(__FILE__) . '/thold_cemdb.php');
+		$alert_text = thold_cemdb_enrich_alert($alert_text, $thold);
+	}
+
 	return $alert_text;
 }
 
@@ -4210,6 +4216,12 @@ function get_thold_warning_text($data_source_name, $thold, $h, $currentval, $loc
 	}
 
 	$warning_text = thold_replace_threshold_tags($warning_text, $thold, $h, $currentval, $local_graph_id, $data_source_name);
+
+	// Enrich with CEMDB if enabled
+	if (file_exists(dirname(__FILE__) . '/thold_cemdb.php')) {
+		include_once(dirname(__FILE__) . '/thold_cemdb.php');
+		$warning_text = thold_cemdb_enrich_alert($warning_text, $thold);
+	}
 
 	return $warning_text;
 }

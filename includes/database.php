@@ -2149,5 +2149,19 @@ function thold_setup_database() {
 	db_execute('UPDATE thold_data
 		SET thold_enabled = "on"
 		WHERE thold_template_id = 0 OR template_enabled != "on"');
+
+	// CEMDB Cache Table
+	$data = array();
+	$data['columns'][] = array('name' => 'id', 'type' => 'int(11)', 'unsigned' => true, 'NULL' => false, 'auto_increment' => true);
+	$data['columns'][] = array('name' => 'error_code', 'type' => 'varchar(128)', 'NULL' => false, 'default' => '');
+	$data['columns'][] = array('name' => 'platform', 'type' => 'varchar(128)', 'NULL' => false, 'default' => '');
+	$data['columns'][] = array('name' => 'data', 'type' => 'text', 'NULL' => false);
+	$data['columns'][] = array('name' => 'timestamp', 'type' => 'int(11)', 'unsigned' => true, 'NULL' => false, 'default' => '0');
+	$data['primary'] = 'id';
+	$data['keys'][] = array('name' => 'error_code_platform', 'columns' => 'error_code`, `platform');
+	$data['keys'][] = array('name' => 'timestamp', 'columns' => 'timestamp');
+	$data['type'] = 'InnoDB';
+	$data['comment'] = 'CEMDB Cache for Cisco Error Messages';
+	api_plugin_db_table_create('thold', 'plugin_thold_cemdb_cache', $data);
 }
 

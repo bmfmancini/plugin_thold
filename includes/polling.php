@@ -52,6 +52,12 @@ function thold_cleanup_log() {
 	if (db_affected_rows() > 0) {
 		set_config_option('time_last_change_thold_log', time());
 	}
+
+	// Cleanup CEMDB cache
+	if (file_exists(dirname(__FILE__) . '/../thold_cemdb.php')) {
+		include_once(dirname(__FILE__) . '/../thold_cemdb.php');
+		thold_cemdb_cleanup_cache();
+	}
 }
 
 function thold_poller_output(&$rrd_update_array) {

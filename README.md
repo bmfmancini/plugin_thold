@@ -94,6 +94,19 @@ different sources.  These forks of thold are not necessarily compatible with the
 current version of Cacti's thold plugin.  Please be aware of this when
 installing thold for the first time.
 
+## CEMDB Integration
+
+The thold plugin now includes optional integration with Cisco's Error Message 
+Database (CEMDB). When enabled, threshold alerts from Cisco devices will be 
+automatically enriched with detailed error explanations and recommended actions.
+
+To use this feature:
+1. Obtain a Cisco API key from https://developer.cisco.com/
+2. Enable CEMDB integration in Cacti's Threshold Settings
+3. Configure your API key and preferences
+
+For detailed documentation, see [CEMDB_README.md](CEMDB_README.md).
+
 ## Authors
 
 The thold plugin has been in development for well over a decade with increasing

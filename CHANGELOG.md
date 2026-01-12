@@ -2,6 +2,7 @@
 
 --- develop ---
 
+* feature: Added CEMDB (Cisco Error Message Database) integration to enrich threshold alerts with detailed Cisco error information
 * issue#686: Applying a templated threshold to a graph via the wrench icon, creates a duplicate graph
 * issue#707: Excessive timeout for row caching prevents data from being updated timely
 * issue#710: Fixing Typo in thold_daemons.service File

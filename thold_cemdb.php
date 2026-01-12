@@ -191,7 +191,18 @@ function thold_cemdb_get_cached($error_code, $platform = '') {
 		array($error_code, $platform, time() - $cache_ttl));
 	
 	if ($cached) {
-		return json_decode($cached['data'], true);
+		$decoded = json_decode($cached['data'], true);
+		
+		// Check for JSON decode errors
+		if (json_last_error() !== JSON_ERROR_NONE) {
+			cacti_log('CEMDB: Failed to decode cached data - ' . json_last_error_msg(), false, 'THOLD');
+			// Delete corrupted cache entry
+			db_execute_prepared('DELETE FROM plugin_thold_cemdb_cache WHERE error_code = ? AND platform = ?',
+				array($error_code, $platform));
+			return false;
+		}
+		
+		return $decoded;
 	}
 	
 	return false;
@@ -204,15 +215,23 @@ function thold_cemdb_get_cached($error_code, $platform = '') {
  * @param string $platform - Platform identifier
  * @param array $data - Data to cache
  *
- * @return void
+ * @return bool - True on success, false on failure
  */
 function thold_cemdb_cache_result($error_code, $platform, $data) {
 	$json_data = json_encode($data);
+	
+	// Check for JSON encode errors
+	if ($json_data === false) {
+		cacti_log('CEMDB: Failed to encode data for caching - ' . json_last_error_msg(), false, 'THOLD');
+		return false;
+	}
 	
 	db_execute_prepared('REPLACE INTO plugin_thold_cemdb_cache
 		(error_code, platform, data, timestamp)
 		VALUES (?, ?, ?, ?)',
 		array($error_code, $platform, $json_data, time()));
+	
+	return true;
 }
 
 /**

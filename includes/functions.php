@@ -6220,7 +6220,8 @@ function thold_build_cdef($cdef, $value, $local_data_id, $data_template_rrd_id) 
 				}
 
 				if (!$found) {
-					cacti_log('WARNING: Issues with CDEF property: ' . $cdef['value'] . ', CDEF ID: ' . $cdef['id'] . ', Returning Original Data: ' . $oldvalue, false, 'THOLD', POLLER_VERBOSITY_MEDIUM);
+					// Logged at every verbosity: the threshold is compared against a value the CDEF did not convert (#736).
+					cacti_log('WARNING: Threshold CDEF[' . $cdef['cdef_id'] . '] Special Data Source "' . $cdef['value'] . '" is not supported. Data ID ' . $local_data_id . ' is evaluated without the CDEF, using ' . $oldvalue, false, 'THOLD');
 
 					return $oldvalue;
 
@@ -6287,7 +6288,18 @@ function thold_build_cdef($cdef, $value, $local_data_id, $data_template_rrd_id) 
 
 				break;
 			default:
-				cacti_log('Unknown RPN type: ' . $cdef_array[$cursor]['type'], false, 'THOLD', POLLER_VERBOSITY_MEDIUM);
+				/**
+				 * Function items (LOG, MIN, IF, ...) and nested CDEFs are not
+				 * evaluated here. Logged at every verbosity, not MEDIUM, because
+				 * the threshold is then compared against the unconverted value
+				 * and nothing else would show it (#736).
+				 */
+				$cdef_item_names = [1 => 'Function', 5 => 'Another CDEF'];
+				$item_type       = $cdef_array[$cursor]['type'];
+
+				cacti_log('WARNING: Threshold CDEF[' . $cdef_array[$cursor]['cdef_id'] . '] item type ' . $item_type .
+					(isset($cdef_item_names[$item_type]) ? ' (' . $cdef_item_names[$item_type] . ')' : '') .
+					' is not supported. Data ID ' . $local_data_id . ' is evaluated without the CDEF, using ' . $oldvalue, false, 'THOLD');
 
 				return ($oldvalue);
 
